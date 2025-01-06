@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
+             xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource NormalBackgroundColor}"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="true"
+             x:Class="ActualizacionClientesIdealMaui.Views.SincronizarPage">
+
+    
+    <ContentPage.Content>
+        
+        <ScrollView >
+            <VerticalStackLayout
+                Margin="20"
+                Spacing="20"
+                
+                >
+                <Button x:Name="btnObtenerDatos" Text="Obtener datos del servidor" FontSize="20" Clicked="btnObtenerDatos_Clicked">
+                    
+                </Button>
+                <Button x:Name="btnEnviarDatos" Text="Enviar datos pendientes al servidor" FontSize="20" LineBreakMode="WordWrap"  Clicked="btnEnviarDatos_Clicked">
+                    
+                </Button>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        
+    </ContentPage.Content>
+    
+    
+</ContentPage>

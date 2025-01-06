@@ -1,0 +1,90 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0-android33.0</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<UseMaui>true</UseMaui>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SingleProject>true</SingleProject>
+		<RootNamespace>ActualizacionClientesIdealMaui</RootNamespace>
+
+		<!-- Display name -->
+		<ApplicationTitle>ActualizacionClientesIdealMaui</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.ActualizacionClientesIdealMaui</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+        
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net7.0-ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net7.0-android'">21.0</SupportedOSPlatformVersion>
+		<UseInterpreter Condition="$(TargetFramework.Contains('-ios')) AND '$(Configuration)' == 'Release'">True</UseInterpreter>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android33.0|AnyCPU'">
+	  <DebugSymbols>False</DebugSymbols>
+	  <AndroidEnableProfiledAot>True</AndroidEnableProfiledAot>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <ApplicationId>com.companyname.ActualizacionClientesIdealMaui</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android33.0|AnyCPU'">
+	  <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+	  <RunAOTCompilation>False</RunAOTCompilation>
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	  <ApplicationId>com.companyname.ActualizacionClientesIdealMaui</ApplicationId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\idealsalogo.png" Color="#ffffff" />
+
+		<!-- Splash Screen -->
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="DevExpress.Maui.Charts" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.CollectionView" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.Core" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.DataGrid" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.Controls" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.Scheduler" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Maui.Editors" Version="23.1.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.6" />
+		<TrimmableAssembly Include="DevExpress.Data.v23.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\DataGridTodosPage.xaml.cs">
+	    <DependentUpon>DataGridTodosPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SincronizarPage.xaml.cs">
+	    <DependentUpon>SincronizarPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\DataGridTodosPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>	
+</Project>

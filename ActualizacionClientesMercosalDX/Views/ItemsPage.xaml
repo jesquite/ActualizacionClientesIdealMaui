@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:local="clr-namespace:ActualizacionClientesIdealMaui.ViewModels"  
+             xmlns:model="clr-namespace:ActualizacionClientesIdealMaui.Models"
+             Title=""
+             IconImageSource="browse"
+             BackgroundColor="{StaticResource NormalBackgroundColor}"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="true"
+             x:Class="ActualizacionClientesIdealMaui.Views.ItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="lblUsuario" Text="" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        
+        <VerticalStackLayout BackgroundColor="#f9fff5" Spacing="5">
+               
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <Label Text="1. Código de cliente"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                    <Entry x:Name="txtCodigoCliente" Text="" Placeholder="Código" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand"/>
+                </VerticalStackLayout>
+            </Frame>
+
+           
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                    <Label Text="2. Nombre"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                    <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+                    <Entry x:Name="txtNombreComercial" Text="" Placeholder="Nombre comercial" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="3. Dirección"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <Editor x:Name="txtDireccion" Text="" Placeholder="Dirección" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand"  HeightRequest="100" />
+                    <HorizontalStackLayout>
+                        <CheckBox x:Name="chDomicilioFiscal" IsChecked="True" CheckedChanged="chDomicilioFiscal_CheckedChanged" BackgroundColor="White"></CheckBox>
+                        <Label Text="Domicilio fiscal es el mismo" VerticalOptions="Center" ></Label>
+                    </HorizontalStackLayout>
+                    <Editor IsVisible="False" x:Name="txtDomicilioFiscal" Text="" Placeholder="Domicilio fiscal" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand" HeightRequest="100"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="4. Correo electrónico"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <Entry x:Name="txtCorreo" Text="" Placeholder="correo@correo.com" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="5. Teléfono"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <Entry x:Name="txtTelefono" Text="" Placeholder="Teléfono" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="6. Departamento"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <dxe:ComboBoxEdit PickerShowMode="DropDown" x:Name="comboDepartamento" 
+                                      SelectionChanged="comboDepartamento_SelectedIndexChanged" 
+                                      BorderColor="LightGray"
+                                      DropDownBackgroundColor="White"
+                                      CursorColor="LightGreen"
+                                      DropDownIconColor="LightGreen"
+                                      DropDownSelectedItemBackgroundColor="LightGreen"
+                                      FocusedBorderColor="LightGreen"
+                                      IsFilterEnabled="True">
+                        
+                    </dxe:ComboBoxEdit>
+
+                    <!--<Picker x:Name="comboDepartamento" SelectedIndexChanged="comboDepartamento_SelectedIndexChanged"
+                        Title="Departamento">
+                    </Picker>-->
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{DynamicResource FrameStyle}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="7. Municipio"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <dxe:ComboBoxEdit PickerShowMode="DropDown" x:Name="pickermunicipio" 
+                                      BorderColor="LightGray"
+                                      DropDownBackgroundColor="White"
+                                      CursorColor="LightGreen"
+                                      DropDownIconColor="LightGreen"
+                                      DropDownSelectedItemBackgroundColor="LightGreen"
+                                      FocusedBorderColor="LightGreen"
+                                      IsFilterEnabled="True">
+
+                    </dxe:ComboBoxEdit>
+
+                    <Label Text="7.1. Colonia"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                    <Entry x:Name="txtColonia" Text="" Placeholder="Colonia" Style="{DynamicResource EntryStyle}" HorizontalOptions="StartAndExpand"/>
+
+                </VerticalStackLayout>
+            </Frame>
+    
+
+       
+            <!--cambiar por tipo de cliente-->    
+
+            <Frame Style="{DynamicResource FrameStyle}" x:Name="frameTipoCliente">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="8. Tipo de cliente"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red"/>
+                    </HorizontalStackLayout>
+
+                    <dxe:ComboBoxEdit PickerShowMode="DropDown" x:Name="pickertipocliente" 
+                                      SelectionChanged="pickertipocliente_SelectionChanged" 
+                                      BorderColor="LightGray"
+                                      DropDownBackgroundColor="White"
+                                      CursorColor="LightGreen"
+                                      DropDownIconColor="LightGreen"
+                                      DropDownSelectedItemBackgroundColor="LightGreen"
+                                      FocusedBorderColor="LightGreen"
+                                      FilterCondition="Contains"
+                                      IsFilterEnabled="True">
+                    </dxe:ComboBoxEdit>
+                    
+                </VerticalStackLayout>
+            </Frame>
+
+            
+            <!--cambiar por foto de negocio-->
+            <Frame Style="{DynamicResource FrameStyle}" IsVisible="True" x:Name="frameFoto" >
+                <VerticalStackLayout>
+                    <HorizontalStackLayout >
+                        <Label Text="9. Fotografía del negocio"  Style="{DynamicResource LabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text=" *" TextColor="Red" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout>
+
+                        <Frame HeightRequest="50" WidthRequest="100" Margin="5" Padding="0" BorderColor="LightBlue" CornerRadius="20">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnSelectImageClicked"></TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <HorizontalStackLayout Padding="0">
+                                <ImageButton Source="gallery.png" Margin="0" VerticalOptions="Center" x:Name="btnImagenDui" Clicked="OnSelectImageClicked" WidthRequest="50" />
+                                <Label Text="Cargar" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"></Label>
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <Frame HeightRequest="50" WidthRequest="170" Padding="0"  Margin="5" BorderColor="LightBlue" CornerRadius="20">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnTakePictureClicked"></TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <HorizontalStackLayout Padding="0">
+                                <ImageButton Source="camera.png" Margin="0" VerticalOptions="Center" x:Name="btnTakePIc" Clicked="OnTakePictureClicked" WidthRequest="50" />
+                                <Label Text="Tomar fotografía" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"></Label>
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <ImageButton x:Name="imgDUI" IsVisible="False" WidthRequest="35" Margin="0" Padding="0" Source="document.png" HeightRequest="35" Clicked="viewDUIImage"></ImageButton>
+
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+
+            <ActivityIndicator x:Name="indicadorActividad" IsRunning="true" IsVisible="false" />
+
+            <Button Text="Enviar datos"
+                    x:Name="btnIngresardatos"
+                    Margin="25,5,25,25"
+                    FontSize="22"
+                    Padding="10"
+                    CornerRadius="10"
+                    Clicked="btnIngresardatos_Clicked"
+                    WidthRequest="160"
+                    ></Button>
+
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

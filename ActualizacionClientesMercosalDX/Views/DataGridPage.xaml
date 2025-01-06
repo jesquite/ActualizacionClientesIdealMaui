@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxg="clr-namespace:DevExpress.Maui.DataGrid;assembly=DevExpress.Maui.DataGrid"
+           
+             Title="{Binding Title}"
+             IconImageSource="browse"
+             BackgroundColor="{StaticResource NormalBackgroundColor}"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="true"
+             x:Class="ActualizacionClientesIdealMaui.Views.DataGridPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="lblUsuario" Text=""  />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+
+        <dxg:DataGridView x:Name="dgClientes" 
+                          ShowAutoFilterRow="True"
+                          AutoFilterRowHeight="35"
+                          GroupRowHeight="50"
+                          RowHeight="50"
+                          DoubleTap="datagridClientes_DoubleTap"
+                          ItemsSource="{Binding items}"
+                          Margin="0,0,0,20" >
+
+            <dxg:DataGridView.GroupRowAppearance>
+                <dxg:GroupRowAppearance BackgroundColor="#bac9e6" />
+            </dxg:DataGridView.GroupRowAppearance>
+
+            <dxg:DataGridView.ColumnHeaderAppearance>
+                <dxg:ColumnHeaderAppearance BackgroundColor="#2a4878" BorderColor="White" 
+                                   FontSize="16" FontColor="White" FontAttributes="Bold" Padding="0,15,0,15" 
+                                   HorizontalLineThickness="2"/>
+            </dxg:DataGridView.ColumnHeaderAppearance>
+
+            <dxg:DataGridView.CellAppearance>
+                <dxg:CellAppearance Padding="2" 
+                                        BorderColor="#515151" 
+                                        FontSize="14"
+                                        SelectionColor="#f0ffcc" 
+                                        SelectionFontColor="Black"/>
+
+            </dxg:DataGridView.CellAppearance>
+
+            <dxg:DataGridView.Columns >
+                <dxg:TextColumn Caption="Código"   FieldName="ccCodigoCliente" VerticalContentAlignment="Center" AutoFilterCondition="StartsWith" Width="75" />
+                <dxg:TextColumn Caption="Cliente" FieldName="ccNombreCliente" VerticalContentAlignment="Center" AutoFilterCondition="Contains"/>
+                <dxg:TextColumn Caption="Teléfono" FieldName="telefono" VerticalContentAlignment="Center" AutoFilterCondition="StartsWith" Width="75"/>
+                <dxg:TextColumn Caption="Estado" FieldName="estado" VerticalContentAlignment="Center" AutoFilterCondition="Equals" IsGrouped="True"/>
+            </dxg:DataGridView.Columns>
+
+        </dxg:DataGridView>
+
+
+    </ScrollView>
+
+
+</ContentPage>
