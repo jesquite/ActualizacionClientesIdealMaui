@@ -15,12 +15,13 @@ namespace ActualizacionClientesIdealMaui.Models
         public string dgNombreDepartamento { get; set; }
         public string dgNombreMunicipio { get; set; }
         public string ccNombreComercial { get; set; }
-        public int ccCodigoClienteTipo { get; set; }
+        public int ccCodigoClienteCategoria { get; set; }
         public string colonia { get; set; }
         public int dgCodigoDepartamento { get; set; }
         public int dgCodigoMunicipio { get; set; }
         public string domicilioFiscal { get; set; }
         public string fotoNegocio { get; set; }
+        public string fotoNegocio2 { get; set; }
         public string estado { get; set; } = "0";//1 actualizado 0 pendiente
     
         

@@ -21,7 +21,7 @@ namespace ActualizacionClientesIdealMaui.Data
                 dbconn = new SQLiteAsyncConnection(Constants.DatabasePath);
                 await dbconn.CreateTableAsync<Cliente>(); 
                 await dbconn.CreateTableAsync<Departamento>();
-                await dbconn.CreateTableAsync<TipoCliente>();
+                await dbconn.CreateTableAsync<CategoriaCliente>();
                 await dbconn.CreateTableAsync<Municipio>();
                 await dbconn.CreateTableAsync<Usuario>();
 
@@ -58,10 +58,10 @@ namespace ActualizacionClientesIdealMaui.Data
             return await dbconn.Table<Departamento>().Where(t=> t.dgNombreDepartamento == nombre).FirstOrDefaultAsync();
         }
 
-        public async Task<List<TipoCliente>> getTiposCliente()
+        public async Task<List<CategoriaCliente>> getCategoriasCliente()
         {
             await Init();
-            return await dbconn.Table<TipoCliente>().ToListAsync();
+            return await dbconn.Table<CategoriaCliente>().ToListAsync();
         }
 
         public async Task<List<Municipio>> getMunicipios(int idDepartamento)
@@ -115,7 +115,7 @@ namespace ActualizacionClientesIdealMaui.Data
             await Init();
             await dbconn.DeleteAllAsync<Cliente>();
             await dbconn.DeleteAllAsync <Departamento>();
-            await dbconn.DeleteAllAsync <TipoCliente>();
+            await dbconn.DeleteAllAsync <CategoriaCliente>();
             await dbconn.DeleteAllAsync <Municipio>();
             await dbconn.DeleteAllAsync <Usuario>();
         }
