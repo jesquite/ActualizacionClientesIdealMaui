@@ -1,6 +1,8 @@
 ﻿using ActualizacionClientesIdealMaui.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+
 using CommunityToolkit.Mvvm.Input;
+
 
 
 namespace ActualizacionClientesIdealMaui.ViewModels;
@@ -37,16 +39,19 @@ public partial class LoginViewModel : ObservableObject
         }
         else
         {
+            
             HttpClient client = new HttpClient();
-            string link = ip + "validarusuario/" + UserName + "/" + Password;
+            
+            string link = ip + "validarusuario/" + UserName.Replace(" ", "") + "/" + Password.Replace(" ", "");
+            
             string json = client.GetStringAsync(link).Result;
 
             if (Convert.ToBoolean(json) == true)
             {
 
                 Preferences.Set("ip", "http://201.222.61.165:8092/");
-                Preferences.Set("usuario", UserName);
-                Preferences.Set("pass", Password);
+                Preferences.Set("usuario", UserName.Replace(" ", ""));
+                Preferences.Set("pass", Password.Replace(" ", ""));
                 Preferences.Set("logueado", true);
 
                 //await Shell.Current.GoToAsync("//about");

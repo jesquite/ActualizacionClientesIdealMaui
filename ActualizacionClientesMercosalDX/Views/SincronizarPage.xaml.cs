@@ -87,7 +87,7 @@ namespace ActualizacionClientesIdealMaui.Views
                     telefono = clienteparaActualizarLocal.telefono,
                     confirmado = Convert.ToInt32(confirmado),
                     usuario = usuario,
-                    ccCodigoClienteTipo = clienteparaActualizarLocal.ccCodigoClienteTipo.ToString(),
+                    ccCodigoClienteCategoria = clienteparaActualizarLocal.ccCodigoClienteCategoria.ToString(),
                     latitud = loc.Latitude.ToString(),
                     longitud = loc.Longitude.ToString()
                 };
@@ -144,7 +144,7 @@ namespace ActualizacionClientesIdealMaui.Views
 
                 var requestObj = new ImageUploadRequest
                 {
-                    codigoCliente = codigoCliente,
+                    codigoCliente = codigoCliente.ToString(),
                     datosImagen = img,
                 };
 

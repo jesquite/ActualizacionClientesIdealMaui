@@ -30,7 +30,7 @@ namespace ActualizacionClientesIdealMaui.Views
         public string telefono { get; set; }
         public int confirmado { get; set; }
         public string usuario { get; set; }
-        public string ccCodigoClienteTipo { get; set; }
+        public string ccCodigoClienteCategoria { get; set; }
         public string latitud { get; set; }
         public string longitud { get; set; }
 
@@ -41,11 +41,14 @@ namespace ActualizacionClientesIdealMaui.Views
         Image fotoNegocio = new Image();
         byte[] fotoNegocioimageBytes;
 
+        Image fotoNegocio2 = new Image();
+        byte[] fotoNegocioimageBytes2;
+
         string codigo_cliente, codigoDepSeleccionado, codigoMuniSeleccionado ;
-        int ccCodigoClienteTipoSeleccionado;
+        int ccCodigoClienteCategoriaSeleccionado;
         List<Departamento> listaDepartamento;
         List<Municipio> listaMunicipio;
-        List<TipoCliente> listaTiposCliente;
+        List<CategoriaCliente> listaCategoriasCliente;
 
 
         string ip = Preferences.Get("ip", "");
@@ -76,12 +79,12 @@ namespace ActualizacionClientesIdealMaui.Views
         {
             await llenarlistas();
 
-            List<string> listaStringTipos = new List<string>();
-            foreach (TipoCliente tipo in listaTiposCliente)
+            List<string> listaStringCategoriass = new List<string>();
+            foreach (CategoriaCliente categoria in listaCategoriasCliente)
             {
-                listaStringTipos.Add(tipo.ccNombreClienteTipo);
+                listaStringCategoriass.Add(categoria.ccNombreClienteCategoria);
             }
-            pickertipocliente.ItemsSource = listaStringTipos;
+            pickercategoriacliente.ItemsSource = listaStringCategoriass;
 
 
             List<string> deptos = new List<string>();
@@ -99,10 +102,10 @@ namespace ActualizacionClientesIdealMaui.Views
         {
             listaMunicipio = new List<Municipio>();
             listaDepartamento = new List<Departamento>();
-            listaTiposCliente = new List<TipoCliente>();
+            listaCategoriasCliente = new List<CategoriaCliente>();
 
             listaMunicipio = await dbapp.getTodosMunicipios();
-            listaTiposCliente = await dbapp.getTiposCliente();
+            listaCategoriasCliente = await dbapp.getCategoriasCliente();
             listaDepartamento = await dbapp.getDepartamentos();
         }
 
@@ -116,16 +119,16 @@ namespace ActualizacionClientesIdealMaui.Views
             txtCodigoCliente.IsReadOnly = true;
 
             Cliente cliente = new Cliente();
-            cliente = await dbapp.getCliente(codigo_cliente);
+            cliente = await dbapp.getCliente( codigo_cliente);
 
-            txtNombreComercial.Text = cliente.ccNombreComercial;
+            txtNombreComercial.Text = cliente.ccNombreCliente;
             txtDireccion.Text = cliente.direccion;
-            if (cliente.direccion != cliente.domicilioFiscal) { chDomicilioFiscal.IsChecked = false; }
-            txtDomicilioFiscal.Text = cliente.domicilioFiscal == null ? "" : cliente.domicilioFiscal;
+            //if (cliente.direccion != cliente.domicilioFiscal) { chDomicilioFiscal.IsChecked = false; }
+            //txtDomicilioFiscal.Text = cliente.domicilioFiscal == null ? "" : cliente.domicilioFiscal;
             txtCorreo.Text = cliente.ccEmail == null ? "" : cliente.ccEmail;
             txtTelefono.Text = cliente.telefono;
-            comboDepartamento.SelectedItem = cliente.dgNombreDepartamento;
-            pickermunicipio.SelectedItem = cliente.dgNombreMunicipio;
+            comboDepartamento.SelectedItem = listaDepartamento.Find(t => t.dgCodigoDepartamento == cliente.dgCodigoDepartamento).dgNombreDepartamento;
+            pickermunicipio.SelectedItem = listaMunicipio.Find(t => t.dgCodigoMunicipio == cliente.dgCodigoMunicipio).dgNombreMunicipio;
             txtColonia.Text = cliente.colonia;
             //txtDistrito.Text = c.dgNombreDistrito;
 
@@ -136,12 +139,19 @@ namespace ActualizacionClientesIdealMaui.Views
                 imgDUI.IsVisible = true;
             }
 
-            //- es contribuyente
-            foreach (TipoCliente tipo in listaTiposCliente)
+            img2.IsVisible = false;
+            if (cliente.fotoNegocio2 != null)
             {
-                if (tipo.ccCodigoClienteTipo == cliente.ccCodigoClienteTipo)
+                fotoNegocio2.Source = convertirByteAImagen(convertirStringToByte(cliente.fotoNegocio2));
+                img2.IsVisible = true;
+            }
+
+            //- es contribuyente
+            foreach (CategoriaCliente categoria in listaCategoriasCliente)
+            {
+                if (categoria.ccCodigoClienteCategoria == cliente.ccCodigoClienteCategoria)
                 {
-                    pickertipocliente.SelectedItem = tipo.ccNombreClienteTipo;
+                    pickercategoriacliente.SelectedItem = categoria.ccNombreClienteCategoria;
                     break;
                 }
             }
@@ -172,15 +182,10 @@ namespace ActualizacionClientesIdealMaui.Views
             List<string> datos = new List<string>();
 
             if (txtCodigoCliente.Text.Length == 0) datos.Add("Código de cliente");
-            if (txtDireccion.Text.Length == 0) datos.Add("Dirección");
-            if (txtCorreo.Text == "") datos.Add("Email");
             if (txtTelefono.Text.Length == 0) datos.Add("Teléfono");
-            if (comboDepartamento.SelectedIndex == -1) datos.Add("Departamento");
-            if (pickermunicipio.SelectedIndex == -1) datos.Add("Municipio");
-
+            
             if (fotoNegocio.Source == null) datos.Add("Fotografía");
-
-            if (pickertipocliente.SelectedItem == null) datos.Add("Tipo de cliente");
+            if (pickercategoriacliente.SelectedItem == null) datos.Add("Categoría del cliente");
 
             if (datos.Count == 0)
             {
@@ -209,7 +214,7 @@ namespace ActualizacionClientesIdealMaui.Views
             string codigoDepartamento = codigoDepSeleccionado;
             string codigoMunicipio = codigoMuniSeleccionado;
             string email = txtCorreo.Text == "" ? "0" : txtCorreo.Text;
-            string domicilioFiscal = txtDomicilioFiscal.Text == "" ? "0" : txtDomicilioFiscal.Text;            
+            string domicilioFiscal = "0";//txtDomicilioFiscal.Text == "" ? "0" : txtDomicilioFiscal.Text;            
             string telefono = txtTelefono.Text.Length > 0 ? txtTelefono.Text : "0";
             string nombreMunicipio = pickermunicipio.SelectedItem.ToString();
             string confirmado = "0";
@@ -233,7 +238,7 @@ namespace ActualizacionClientesIdealMaui.Views
             clienteparaActualizarLocal.dgNombreDepartamento = nombreDepto;
             clienteparaActualizarLocal.fotoNegocio = fotoNegocioimageBytes != null ? Convert.ToBase64String( fotoNegocioimageBytes) : "";
             clienteparaActualizarLocal.estado = "Actualizado";
-            clienteparaActualizarLocal.ccCodigoClienteTipo = ccCodigoClienteTipoSeleccionado;
+            clienteparaActualizarLocal.ccCodigoClienteCategoria = ccCodigoClienteCategoriaSeleccionado;
 
             WeakReferenceMessenger.Default.Send(new mensajeApp("clienteactualizado"));
 
@@ -262,7 +267,7 @@ namespace ActualizacionClientesIdealMaui.Views
                     telefono = clienteparaActualizarLocal.telefono,
                     confirmado = Convert.ToInt32(confirmado),
                     usuario = usuario,
-                    ccCodigoClienteTipo = clienteparaActualizarLocal.ccCodigoClienteTipo.ToString() ,
+                    ccCodigoClienteCategoria = clienteparaActualizarLocal.ccCodigoClienteCategoria.ToString() ,
                     latitud = loc.Latitude.ToString(),
                     longitud = loc.Longitude.ToString()
                 };
@@ -284,7 +289,12 @@ namespace ActualizacionClientesIdealMaui.Views
                 {
                     if (fotoNegocioimageBytes != null)
                     {
-                        await saveIMG(fotoNegocioimageBytes, codigoCliente);
+                        await saveIMG(fotoNegocioimageBytes, codigoCliente, 1);
+                    }
+
+                    if (fotoNegocioimageBytes2 != null)
+                    {
+                        await saveIMG(fotoNegocioimageBytes2, codigoCliente, 2);
                     }
 
                     await DisplayAlert("Actualizado", "La información del cliente fue actualizada", "Aceptar");
@@ -316,9 +326,10 @@ namespace ActualizacionClientesIdealMaui.Views
         {
             public string codigoCliente { get; set; }
             public byte[] datosImagen { get; set; }
+            public int numeroImagen { get; set; }
         }
 
-        private async Task saveIMG(byte[] img, string codigoCliente)
+        private async Task saveIMG(byte[] img, string codigoCliente, int numeroImagen)
         {
             try
             {
@@ -329,6 +340,7 @@ namespace ActualizacionClientesIdealMaui.Views
                 {
                     codigoCliente = codigoCliente,
                     datosImagen = img,
+                    numeroImagen = numeroImagen
                 };
 
                 string jsonContent = JsonConvert.SerializeObject(requestObj);
@@ -369,6 +381,11 @@ namespace ActualizacionClientesIdealMaui.Views
             takePicture();
         }
 
+        private void OnTakePictureClicked2(object sender, EventArgs e)
+        {
+            takePicture2();
+        }
+
 
 
 
@@ -407,15 +424,15 @@ namespace ActualizacionClientesIdealMaui.Views
             {
                 if (MediaPicker.Default.IsCaptureSupported)
                 {
-                    
+
                     FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
-                    
+
                     if (photo != null)
                     {
                         string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 
                         using Stream sourceStream = await photo.OpenReadAsync();
-                        
+
                         using (FileStream localFileStream = File.OpenWrite(localFilePath))
                         {
                             await sourceStream.CopyToAsync(localFileStream);
@@ -428,12 +445,55 @@ namespace ActualizacionClientesIdealMaui.Views
                         // TODO
                         //resize image - se encontro que al cargar imagenes no las estaba enviando al db, puede ser ese el inconveniente, de igual forma es necesraio controlar el tamaño de la imgagen automaticamente para evitar el error y necesitar de la itervenciond el usuario
 
-                 
-                            fotoNegocio.Source = ImageSource.FromFile(localFilePath);
-                            fotoNegocioimageBytes = imageData;
-                            imgDUI.IsVisible = true;
-                 
- 
+
+                        fotoNegocio.Source = ImageSource.FromFile(localFilePath);
+                        fotoNegocioimageBytes = imageData;
+                        imgDUI.IsVisible = true;
+
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+        }
+
+        private async Task takePicture2()
+        {
+            try
+            {
+                if (MediaPicker.Default.IsCaptureSupported)
+                {
+
+                    FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
+
+                    if (photo != null)
+                    {
+                        string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+
+                        using Stream sourceStream = await photo.OpenReadAsync();
+
+                        using (FileStream localFileStream = File.OpenWrite(localFilePath))
+                        {
+                            await sourceStream.CopyToAsync(localFileStream);
+                        };
+
+                        byte[] imageData = File.ReadAllBytes(localFilePath);
+
+                        //var image = PlatformImage.FromStream(sourceStream);
+                        //image = image.Downsize(800, true);
+                        // TODO
+                        //resize image - se encontro que al cargar imagenes no las estaba enviando al db, puede ser ese el inconveniente, de igual forma es necesraio controlar el tamaño de la imgagen automaticamente para evitar el error y necesitar de la itervenciond el usuario
+
+
+                        fotoNegocio2.Source = ImageSource.FromFile(localFilePath);
+                        fotoNegocioimageBytes2 = imageData;
+                        img2.IsVisible = true;
+
+
                     }
                 }
 
@@ -449,16 +509,20 @@ namespace ActualizacionClientesIdealMaui.Views
             verImagen(fotoNegocio);
         }
 
+        private void img2_Clicked(object sender, EventArgs e)
+        {
+            verImagen(fotoNegocio2);
+        }
         private void chDomicilioFiscal_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            if (chDomicilioFiscal.IsChecked == true)
-            {
-                txtDomicilioFiscal.IsVisible = false;
-            }
-            else
-            {
-                txtDomicilioFiscal.IsVisible = true;
-            }
+            //if (chDomicilioFiscal.IsChecked == true)
+            //{
+            //    txtDomicilioFiscal.IsVisible = false;
+            //}
+            //else
+            //{
+            //    txtDomicilioFiscal.IsVisible = true;
+            //}
         }
 
         private async void verImagen(Image img)
@@ -509,17 +573,7 @@ namespace ActualizacionClientesIdealMaui.Views
             return null;
         }
 
-        private void pickertipocliente_SelectionChanged(object sender, EventArgs e)
-        {
-            
-            foreach (TipoCliente tipo in listaTiposCliente)
-            {
-                if (tipo.ccNombreClienteTipo== pickertipocliente.SelectedItem.ToString())
-                {
-                    ccCodigoClienteTipoSeleccionado = tipo.ccCodigoClienteTipo;
-                }
-            }
-        }
+
 
         private void comboDepartamento_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -556,6 +610,20 @@ namespace ActualizacionClientesIdealMaui.Views
         }
 
         public INavigationService Navigation => DependencyService.Get<INavigationService>();
+
+        private void pickercategoriacliente_SelectionChanged_1(object sender, EventArgs e)
+        {
+
+            foreach (CategoriaCliente categoria in listaCategoriasCliente)
+            {
+                if (categoria.ccNombreClienteCategoria == pickercategoriacliente.SelectedItem.ToString())
+                {
+                    ccCodigoClienteCategoriaSeleccionado = categoria.ccCodigoClienteCategoria;
+                }
+            }
+        }
+
+
         protected override bool OnBackButtonPressed()
         {
 

@@ -127,9 +127,9 @@ namespace ActualizacionClientesIdealMaui.Views
                 link = ip + "giros/";
                 json = client.GetStringAsync(link).Result;
 
-                tiposclienteLista girosL = JsonSerializer.Deserialize<tiposclienteLista>(json);
+                categoriasclienteLista girosL = JsonSerializer.Deserialize<categoriasclienteLista>(json);
 
-                foreach (TipoCliente gg in girosL.ccClienteTipo)
+                foreach (CategoriaCliente gg in girosL.ccClienteCategoria)
                 {
                     await dbapp.insertAsync(gg);
                 }

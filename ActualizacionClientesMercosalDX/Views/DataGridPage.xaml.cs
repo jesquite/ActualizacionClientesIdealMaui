@@ -27,7 +27,7 @@ namespace ActualizacionClientesIdealMaui.Views
 
             Application.Current.UserAppTheme = AppTheme.Light;
             dbapp = new dbClientesApp();
-
+            
             usuariou = Preferences.Get("usuario", "");
             passw = Preferences.Get("pass", "");
             ip = ip + Preferences.Get("db", "") + "/";
@@ -42,7 +42,7 @@ namespace ActualizacionClientesIdealMaui.Views
                 }
                 else if(mensaje.Value =="obtenerDatosNuevos")
                 {
-                    consultarClientesAPI();
+                    _ = consultarClientesAPI();
                     leerClientesLocal();
                 }
 
@@ -92,7 +92,7 @@ namespace ActualizacionClientesIdealMaui.Views
                     await dbapp.deleteUsuarioAsync();
                     await dbapp.insertAsync(u); //guarda el usuario en dblocal
 
-                    consultarClientesAPI();
+                    await consultarClientesAPI();
                     
 
                 }
@@ -102,13 +102,13 @@ namespace ActualizacionClientesIdealMaui.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("error", ex.ToString(), "ac");
+                await DisplayAlert("error", ex.ToString(), "aceptar");
             }
 
         }
 
 
-        private async void consultarClientesAPI()
+        private async Task consultarClientesAPI()
         {
             HttpClient client = new HttpClient();
             string link = ip + "datosClientesUsuarioRutaAppGT/" + usuariou + "/" + passw;
@@ -155,12 +155,12 @@ namespace ActualizacionClientesIdealMaui.Views
                     await dbapp.insertAsync(mm);
                 }
 
-                link = ip + "tiposCliente/";
+                link = ip + "categoriasCliente/";
                 json = client.GetStringAsync(link).Result;
 
-                tiposclienteLista listaTiposC = JsonSerializer.Deserialize<tiposclienteLista>(json);
+                categoriasclienteLista listaCategoriasCliente = JsonSerializer.Deserialize<categoriasclienteLista>(json);
 
-                foreach (TipoCliente gg in listaTiposC.ccClienteTipo)
+                foreach (CategoriaCliente gg in listaCategoriasCliente.ccClienteCategoria)
                 {
                     await dbapp.insertAsync(gg);
                 }

@@ -28,7 +28,10 @@ public partial class LoginPage : ContentPage
         }
     }
 
-
+    private void UsernameEntry_TextChanged(object sender, EventArgs e)
+    {
+       //UsernameEntry.Text = UsernameEntry.Text.Trim();
+    }
 }
 
 

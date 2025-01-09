@@ -30,7 +30,7 @@
 
                 <Image Source="user.png" WidthRequest="70" Grid.Row="0"></Image>
 
-                <dxe:TextEdit x:Name="UsernameEntry" Text="{Binding UserName}" Grid.Row="1" Margin="20,20,20,20" CornerRadius="25"  BackgroundColor="White"
+                <dxe:TextEdit x:Name="UsernameEntry" Text="{Binding UserName}" Grid.Row="1" Margin="20,20,20,20" CornerRadius="25"  BackgroundColor="White" TextChanged="UsernameEntry_TextChanged"
                           LabelText="Usuario"  />
 
                 <dxe:PasswordEdit x:Name="PasswordEntry" Text="{Binding Password}" CornerRadius="25"  BackgroundColor="White"
